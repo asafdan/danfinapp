@@ -71,6 +71,13 @@
       </div>
     </header>
     <main>
+      <h2 style="margin-top:0">Snapshot</h2>
+      <div class="card">
+        <div class="muted" style="margin-bottom:10px">This dashboard is read-only. The only way to change what it shows is to import a new snapshot file.</div>
+        <input type="file" id="import-file" accept="application/json,.json">
+        <div id="import-msg" class="note"></div>
+      </div>
+      <div id="app-error" class="error" style="margin:12px 0"></div>
       <div id="empty" class="card hidden">
         <strong>No portfolio snapshot yet.</strong>
         <p class="muted" style="margin:8px 0 12px">Import the <code>portfolio-snapshot.json</code> file to see your portfolio.</p>
@@ -106,13 +113,6 @@
         <div class="card table-wrap"><table id="pos-table"></table></div>
       </div>
 
-      <h2>Snapshot</h2>
-      <div class="card">
-        <div class="muted" style="margin-bottom:10px">This dashboard is read-only. The only way to change what it shows is to import a new snapshot file.</div>
-        <input type="file" id="import-file" accept="application/json,.json">
-        <div id="import-msg" class="note"></div>
-      </div>
-      <div id="app-error" class="error"></div>
     </main>
   </div>
 

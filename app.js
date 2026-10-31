@@ -84,14 +84,19 @@ function start(user) {
     if (!file) return;
     const msg = $("import-msg");
     msg.className = "note";
+    msg.textContent = "Importing…";
     try {
       if (file.size > 500_000) throw new Error("File is too large.");
       const data = validateSnapshot(JSON.parse(await file.text()));
-      await setDoc(ref, data);
+      const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error(
+        "Timed out talking to Firestore. Check that the Firestore database exists, the rules are published, " +
+        "and that an ad/privacy blocker isn't blocking firestore.googleapis.com.")), 15000));
+      await Promise.race([setDoc(ref, data), timeout]);
       msg.textContent = "Snapshot imported.";
     } catch (err) {
+      console.error(err);
       msg.className = "error";
-      msg.textContent = "Import failed: " + err.message;
+      msg.textContent = "Import failed: " + (err.code ? err.code + " - " : "") + err.message;
     }
   };
 }
