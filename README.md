@@ -42,6 +42,11 @@ In Firebase: **Authentication > Settings > Authorized domains > Add domain**, th
 ## Using it
 Open your Pages URL and click **Sign in with Google**. Login persists in your browser, so next visits sign you in automatically.
 
+## Portfolio dashboard
+- Read-only view of an IBKR snapshot with total value in original currency, USD and ILS, plus a 1-year exchange-rate chart.
+- **The snapshot contains your financial data, so it is never committed to this repo.** Sign in, then use *Snapshot > choose file* to import `portfolio-snapshot.json`. It is stored in Firestore under your own user ID (protected by `firestore.rules`).
+- Exchange rates: ECB reference rates via the free Frankfurter API (https://frankfurter.dev). History is cached in your browser (IndexedDB) and only new days are downloaded, so it keeps growing and works offline. The cache is per browser.
+
 ## Customizing
 The sample app is a simple notes list stored at `users/{uid}/notes`. Replace the logic in `app.js` and the markup in `index.html` with your own app. Keep your data under `users/{uid}/...` so the existing rules protect it.
 

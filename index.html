@@ -3,41 +3,57 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Private App</title>
+  <meta name="referrer" content="no-referrer">
+  <title>Portfolio Dashboard</title>
   <style>
-    :root { --bg:#f6f7fb; --card:#fff; --text:#1f2430; --muted:#6b7280; --accent:#4f46e5; --border:#e5e7eb; }
+    :root { --bg:#f6f7fb; --card:#fff; --text:#1f2430; --muted:#6b7280; --accent:#4f46e5; --border:#e5e7eb; --pos:#15803d; --neg:#b91c1c; }
     @media (prefers-color-scheme: dark) {
-      :root { --bg:#0f1117; --card:#181b24; --text:#e8eaf0; --muted:#9aa1b2; --accent:#818cf8; --border:#2a2f3c; }
+      :root { --bg:#0f1117; --card:#181b24; --text:#e8eaf0; --muted:#9aa1b2; --accent:#818cf8; --border:#2a2f3c; --pos:#4ade80; --neg:#f87171; }
     }
     * { box-sizing: border-box; }
     body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
     .hidden { display:none !important; }
     .center { min-height:100vh; display:grid; place-items:center; padding:16px; }
-    .card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:32px; width:100%; max-width:380px; text-align:center; }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px; }
+    .login-card { width:100%; max-width:380px; text-align:center; padding:32px; }
     h1 { margin:0 0 8px; font-size:1.4rem; }
-    p.muted { color:var(--muted); margin:0 0 24px; }
-    button { font:inherit; cursor:pointer; border-radius:10px; border:1px solid var(--border); background:var(--card); color:var(--text); padding:10px 16px; }
-    button.primary { background:#fff; color:#1f2430; display:inline-flex; gap:10px; align-items:center; font-weight:500; }
-    button.primary:hover { box-shadow:0 1px 6px rgba(0,0,0,.2); }
-    header { display:flex; justify-content:space-between; align-items:center; padding:12px 20px; background:var(--card); border-bottom:1px solid var(--border); }
+    h2 { margin:28px 0 12px; font-size:1.05rem; }
+    p.muted, .muted { color:var(--muted); }
+    p.muted { margin:0 0 24px; }
+    button, select, input[type=file]::file-selector-button { font:inherit; cursor:pointer; border-radius:10px; border:1px solid var(--border); background:var(--card); color:var(--text); padding:8px 14px; }
+    select { padding:6px 10px; }
+    button.google { background:#fff; color:#1f2430; display:inline-flex; gap:10px; align-items:center; font-weight:500; padding:10px 16px; }
+    button.google:hover { box-shadow:0 1px 6px rgba(0,0,0,.2); }
+    header { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; padding:12px 20px; background:var(--card); border-bottom:1px solid var(--border); }
     header .user { display:flex; align-items:center; gap:10px; }
     header img { width:32px; height:32px; border-radius:50%; }
-    main { max-width:720px; margin:24px auto; padding:0 16px; }
-    .error { color:#dc2626; margin-top:16px; font-size:.9rem; }
-    form { display:flex; gap:8px; margin-bottom:16px; }
-    input[type=text] { flex:1; font:inherit; padding:10px 12px; border-radius:10px; border:1px solid var(--border); background:var(--card); color:var(--text); }
-    ul { list-style:none; padding:0; margin:0; }
-    li { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:10px 14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; }
-    li button { padding:4px 10px; }
+    main { max-width:1000px; margin:24px auto; padding:0 16px 48px; }
+    .error { color:var(--neg); margin-top:12px; font-size:.9rem; }
+    .grid { display:grid; gap:12px; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); }
+    .kpi .label { font-size:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; }
+    .kpi .value { font-size:1.6rem; font-weight:650; margin-top:6px; font-variant-numeric:tabular-nums; }
+    .kpi .sub { font-size:.85rem; color:var(--muted); margin-top:4px; font-variant-numeric:tabular-nums; }
+    .table-wrap { overflow-x:auto; padding:0; }
+    table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; font-size:.9rem; }
+    th, td { padding:10px 14px; text-align:right; border-bottom:1px solid var(--border); white-space:nowrap; }
+    th:first-child, td:first-child { text-align:left; }
+    th { font-weight:600; color:var(--muted); font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; }
+    tr:last-child td { border-bottom:none; }
+    .pos { color:var(--pos); } .neg { color:var(--neg); }
+    .controls { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px; }
+    #chart { width:100%; height:260px; display:block; }
+    #chart text { fill:var(--muted); font-size:11px; }
+    #chart .line { fill:none; stroke:var(--accent); stroke-width:2; }
+    #chart .grid-line { stroke:var(--border); stroke-width:1; }
+    .note { font-size:.8rem; color:var(--muted); margin-top:8px; }
   </style>
 </head>
 <body>
-  <!-- Signed-out view -->
   <div id="login-view" class="center hidden">
-    <div class="card">
-      <h1>My Private App</h1>
+    <div class="card login-card">
+      <h1>Portfolio Dashboard</h1>
       <p class="muted">Sign in with your Google account to continue.</p>
-      <button id="login-btn" class="primary">
+      <button id="login-btn" class="google">
         <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
         Sign in with Google
       </button>
@@ -45,10 +61,9 @@
     </div>
   </div>
 
-  <!-- Signed-in view -->
   <div id="app-view" class="hidden">
     <header>
-      <strong>My Private App</strong>
+      <strong>Portfolio Dashboard</strong>
       <div class="user">
         <img id="avatar" alt="" referrerpolicy="no-referrer">
         <span id="user-name"></span>
@@ -56,17 +71,51 @@
       </div>
     </header>
     <main>
-      <h2>Your notes</h2>
-      <form id="note-form">
-        <input type="text" id="note-input" placeholder="Add a note..." required maxlength="500">
-        <button class="primary" type="submit" style="background:var(--accent);color:#fff;border:none">Add</button>
-      </form>
-      <ul id="notes"></ul>
+      <div id="empty" class="card hidden">
+        <strong>No portfolio snapshot yet.</strong>
+        <p class="muted" style="margin:8px 0 12px">Import the <code>portfolio-snapshot.json</code> file to see your portfolio.</p>
+      </div>
+
+      <div id="dash" class="hidden">
+        <div class="muted" id="asof"></div>
+
+        <h2>Total value</h2>
+        <div class="grid" id="totals"></div>
+
+        <h2>By original currency</h2>
+        <div class="card table-wrap"><table id="ccy-table"></table></div>
+
+        <h2>Exchange rates (past year)</h2>
+        <div class="card">
+          <div class="controls">
+            <label>1 <select id="fx-base"></select></label>
+            <label>in <select id="fx-quote"></select></label>
+            <select id="fx-range">
+              <option value="30">1 month</option>
+              <option value="90">3 months</option>
+              <option value="180">6 months</option>
+              <option value="9999" selected>All stored</option>
+            </select>
+            <span id="fx-latest" class="muted"></span>
+          </div>
+          <svg id="chart" role="img" aria-label="Exchange rate history chart"></svg>
+          <div class="note" id="fx-status"></div>
+        </div>
+
+        <h2>Positions</h2>
+        <div class="card table-wrap"><table id="pos-table"></table></div>
+      </div>
+
+      <h2>Snapshot</h2>
+      <div class="card">
+        <div class="muted" style="margin-bottom:10px">This dashboard is read-only. The only way to change what it shows is to import a new snapshot file.</div>
+        <input type="file" id="import-file" accept="application/json,.json">
+        <div id="import-msg" class="note"></div>
+      </div>
       <div id="app-error" class="error"></div>
     </main>
   </div>
 
-  <!-- Loading -->
   <div id="loading" class="center"><p class="muted">Loading…</p></div>
 
   <script type="module" src="app.js"></script>
